@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+     xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
+  <Product Id="*" UpgradeCode="87881973-51CD-4FFA-B395-FA2B0DE0D776" Version="1.0.0.0" Language="1033" Name="mPLAYER" Manufacturer="ddz95">
+    <Package InstallerVersion="300" Platform="x64" InstallScope="perMachine" Compressed="yes"/>
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed."/>
+    
+    <Media Id="1" Cabinet="mPLAYER.cab" EmbedCab="yes" />
+
+    <!-- Step 1: Define the directory structure -->
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFiles64Folder">
+        <!-- 64 bit version -->
+        <Directory Id="APPLICATIONROOTDIRECTORY" Name="mPLAYER">
+          <Directory Id="LOCALESDIRECTORY" Name="locales"/>
+        </Directory>
+      </Directory>
+      <Directory Id="DesktopFolder" Name="Desktop"/>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="AppFolder" Name="mPLAYER"/>
+      </Directory>
+    </Directory>
+
+    <!-- BEGIN .NET Framework verification -->
+    
+    <PropertyRef Id="WIX_IS_NETFRAMEWORK_452_OR_LATER_INSTALLED"/>
+
+    <Condition Message="mPLAYER requires .NET Framework 4.5.2 or higher to be installed.">
+      <![CDATA[INSTALLED OR WIX_IS_NETFRAMEWORK_452_OR_LATER_INSTALLED]]>
+    </Condition>
+
+    <!-- END .NET Framework verification -->
+    
+    <DirectoryRef Id="TARGETDIR">
+      <Component Id="RegistryEntries" Guid="E285F21F-3AED-49ED-88C8-6599243DCC2F">
+        <RegistryKey Root="HKCU" Key="Software\Microsoft\mPLAYER" Action="createAndRemoveOnUninstall">
+          <RegistryValue Type="integer" Name="Version" Value="10" KeyPath="yes"/>
+        </RegistryKey>
+      </Component>
+    </DirectoryRef>
+    
+    <Icon Id="icon.ico" SourceFile="C:\Users\Dawid\Desktop\PLAYER\Setup\icon.ico"/>
+
+    <DirectoryRef Id="AppFolder">
+      <Component Id="AppStartMenuShortcut" Guid="751A2870-E9C5-4C87-89E1-4A33D0F10C0F">
+        <Shortcut Id="StartMenuShortcut" Name="mPLAYER" Icon="icon.ico" Target="[#mPLAYERexe]" WorkingDirectory="APPLICATIONROOTDIRECTORY"/>
+        <RemoveFolder Id="CleanUpShortcut" Directory="AppFolder" On="uninstall"/>
+        <RegistryValue Root="HKCU" Key="Software\Microsoft\mPLAYER" Name="StartMenuShortcut" Type="integer" Value="1" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="APPLICATIONROOTDIRECTORY">
+      <Component Id="mPLAYERexe" Guid="0FA947FA-38C1-471D-9ABB-81E87E584780" Win64="yes">
+        <File Id="mPLAYERexe" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\mPLAYER.exe" KeyPath="yes" Checksum="yes">
+          <Shortcut Id="desktopmPLAYER" Directory="DesktopFolder" Icon="icon.ico" Name="mPLAYER" WorkingDirectory="APPLICATIONROOTDIRECTORY" Advertise="yes"/>
+        </File>
+      </Component>
+      <Component Id="mPLAYERexeconfig" Guid="38D70D28-915E-45FA-94CC-16500BC0AD2C" Win64="yes">
+        <File Id="mPLAYERexeconfig" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\mPLAYER.exe.config" KeyPath="yes"/>
+      </Component>
+      <Component Id="mPLAYERpdb" Guid="2279974B-D789-4F09-9ED4-E5B714435EE8" Win64="yes">
+        <File Id="mPLAYERpdb" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\mPLAYER.pdb" KeyPath="yes"/>
+      </Component>
+      <Component Id="nativesblobbin" Guid="969AFCF0-F7D5-49ED-99E5-FC46DB13ABE8" Win64="yes">
+        <File Id="nativesblobbin" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\natives_blob.bin" KeyPath="yes"/>
+      </Component>
+      <Component Id="NAudiodll" Guid="577A09AA-6862-420D-9AB8-F4E1AA40F08B" Win64="yes">
+        <File Id="NAudiodll" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\NAudio.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="NAudioxml" Guid="5C2A0503-2C32-4781-ADDD-8ABE11EE97B6" Win64="yes">
+        <File Id="NAudioxml" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\NAudio.xml" KeyPath="yes"/>
+      </Component>
+      <Component Id="policy20taglibsharpconfig" Guid="4B95A30C-7BDD-4770-8B3F-FF458C9FC2F0" Win64="yes">
+        <File Id="policy20taglibsharpconfig" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\policy.2.0.taglib-sharp.config" KeyPath="yes"/>
+      </Component>
+      <Component Id="policy20taglibsharpdll" Guid="72C5F4A9-7F1F-432E-9E63-CD071CAFFD29" Win64="yes">
+        <File Id="policy20taglibsharpdll" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\policy.2.0.taglib-sharp.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="snapshotblobbin" Guid="8C465258-C311-4181-B6CA-B1E1C7C71C67" Win64="yes">
+        <File Id="snapshotblobbin" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\snapshot_blob.bin" KeyPath="yes"/>
+      </Component>
+      <Component Id="taglibsharpdll" Guid="533A6380-C800-4A10-919B-ED55FC01655C" Win64="yes">
+        <File Id="taglibsharpdll" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\taglib-sharp.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="widevinecdmadapterdll" Guid="7658CCC7-CBD3-424E-8911-748A6DD07362" Win64="yes">
+        <File Id="widevinecdmadapterdll" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\widevinecdmadapter.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="WPFSoundVisualizationLibdll" Guid="5F426868-C96F-4E18-9BC4-9BF0CB0A360D" Win64="yes">
+        <File Id="WPFSoundVisualizationLibdll" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\WPFSoundVisualizationLib.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="YoutubeExplodedll" Guid="3BEEB126-C8C5-48EE-8C75-95BB0AA2B518" Win64="yes">
+        <File Id="YoutubeExplodedll" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\YoutubeExplode.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="YoutubeExplodexml" Guid="6A488A5B-852A-47DB-A220-0C98D049A82E" Win64="yes">
+        <File Id="YoutubeExplodexml" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\YoutubeExplode.xml" KeyPath="yes"/>
+      </Component>
+      <Component Id="MediaToolkitdll" Guid="6E56D7DB-51F0-4E50-8114-7876FF1CCB52" Win64="yes">
+        <File Id="MediaToolkitdll" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\MediaToolkit.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="libGLESv2dll" Guid="8CF3AB79-FC07-4852-9F9E-34EDB8F6EBCB" Win64="yes">
+        <File Id="libGLESv2dll" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\libGLESv2.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="libEGLdll" Guid="76526DF3-CB19-4F4C-8B00-B37CBE22CF12" Win64="yes">
+        <File Id="libEGLdll" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\libEGL.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="libcefdll" Guid="831C8DF8-5725-4781-870B-6BFEB0FCCA92" Win64="yes">
+        <File Id="libcefdll" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\libcef.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="icudtldat" Guid="A80B151A-27A8-495A-BBC0-C949AD9599A2" Win64="yes">
+        <File Id="icudtldat" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\icudtl.dat" KeyPath="yes"/>
+      </Component>
+      <Component Id="devtoolsresourcespak" Guid="FE776D29-D3B8-4B12-9325-B8AA584FC604" Win64="yes">
+        <File Id="devtools_resourcespak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\devtools_resources.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="d3dcompiler47dll" Guid="74B53E97-562F-461D-BDE6-E4CB13E91BE6" Win64="yes">
+        <File Id="d3dcompiler47dll" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\d3dcompiler_47.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="chromeelfdll" Guid="1D5E1594-647C-4B4C-B6AB-DDAB9E929F24" Win64="yes">
+        <File Id="chromeelfdll" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\chrome_elf.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="CefSharpxml" Guid="EC780571-51F5-4350-B334-3C30E03DA52D" Win64="yes">
+        <File Id="CefSharpxml" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\CefSharp.xml" KeyPath="yes"/>
+      </Component>
+      <Component Id="CefSharpWpfxml" Guid="49288229-C242-4183-B41E-C24D2D50B041" Win64="yes">
+        <File Id="CefSharpWpfxml" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\CefSharp.Wpf.xml" KeyPath="yes"/>
+      </Component>
+      <Component Id="CefSharpWpfpdb" Guid="0E6CA770-F7CA-4041-82A8-EFCE9B3E8A92" Win64="yes">
+        <File Id="CefSharpWpfpdb" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\CefSharp.Wpf.pdb" KeyPath="yes"/>
+      </Component>
+      <Component Id="CefSharpWpfdll" Guid="0749E77A-785A-4FB5-9C1E-9A26E79D647A" Win64="yes">
+        <File Id="CefSharpWpfdll" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\CefSharp.Wpf.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="CefSharppdb" Guid="26B42800-AC7A-46E2-BA3B-D6B0172B581D" Win64="yes">
+        <File Id="CefSharppdb" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\CefSharp.pdb" KeyPath="yes"/>
+      </Component>
+      <Component Id="CefSharpdll" Guid="BBA1E59B-0E12-45CF-AB7F-15C1860C304C" Win64="yes">
+        <File Id="CefSharpdll" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\CefSharp.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="CefSharpCorexml" Guid="9F77F8CE-F9B8-419F-987F-2C2BDF51F575" Win64="yes">
+        <File Id="CefSharpCorexml" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\CefSharp.Core.xml" KeyPath="yes"/>
+      </Component>
+      <Component Id="CefSharpCorepdb" Guid="E2B82255-169D-4638-808B-55C85D046CAF" Win64="yes">
+        <File Id="CefSharpCorepdb" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\CefSharp.Core.pdb" KeyPath="yes"/>
+      </Component>
+      <Component Id="CefSharpCoredll" Guid="D33C87C3-205F-4733-A904-EDA0342455BA" Win64="yes">
+        <File Id="CefSharpCoredll" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\CefSharp.Core.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="CefSharpBrowserSubprocesspdb" Guid="EE20D023-79EF-4A64-A01C-CD3A8958E3DB" Win64="yes">
+        <File Id="CefSharpBrowserSubprocesspdb" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\CefSharp.BrowserSubprocess.pdb" KeyPath="yes"/>
+      </Component>
+      <Component Id="CefSharpBrowserSubprocessexe" Guid="F816C2F7-9D0B-473A-A9A1-13F547CB9004" Win64="yes">
+        <File Id="CefSharpBrowserSubprocessexe" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\CefSharp.BrowserSubprocess.exe" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="CefSharpBrowserSubprocessCorepdb" Guid="6D3233A7-889E-4640-9320-58FE918B00D4" Win64="yes">
+        <File Id="CefSharpBrowserSubprocessCorepdb" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\CefSharp.BrowserSubprocess.Core.pdb" KeyPath="yes"/>
+      </Component>
+      <Component Id="CefSharpBrowserSubprocessCoredll" Guid="9E5BFBF1-52CE-4991-84BB-4005A9AFF03F" Win64="yes">
+        <File Id="CefSharpBrowserSubprocessCoredll" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\CefSharp.BrowserSubprocess.Core.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="cefextensionspak" Guid="838C9A3D-C6DE-4E7B-B5C3-3D100BAD105A" Win64="yes">
+        <File Id="cefextensionspak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\cef_extensions.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="cef200percentpak" Guid="DFD5F67E-83D0-431C-AF20-C6B11ACF4639" Win64="yes">
+        <File Id="cef200percentpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\cef_200_percent.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="cef100percentpak" Guid="C3501B12-3CCB-4CA7-AD5D-51B1440457B0" Win64="yes">
+        <File Id="cef100percentpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\cef_100_percent.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="cefpak" Guid="3B3E6BF0-2372-4886-9723-476990842DC9" Win64="yes">
+        <File Id="cefpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\cef.pak" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="LOCALESDIRECTORY">
+      <Component Id="ampak" Guid="B19265FC-A596-47BE-96B3-248A4691F947" Win64="yes">
+        <File Id="ampak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\am.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="arpak" Guid="FFEDB23D-BFCE-4E8B-AF84-478FEC9C82A7" Win64="yes">
+        <File Id="arpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\ar.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="bgpak" Guid="4C2BE5A8-C366-4C7E-A4BD-DCBE8AA30DAA" Win64="yes">
+        <File Id="bgpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\bg.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="bnpak" Guid="2403C875-6ED3-4C23-93F4-E5B9BEBE73C7" Win64="yes">
+        <File Id="bnpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\bn.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="capak" Guid="684051F7-32BD-4A96-ACF0-907FF902FBA4" Win64="yes">
+        <File Id="capak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\ca.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="cspak" Guid="BAB63E75-1C5C-497B-BDAD-B76CE7B3178F" Win64="yes">
+        <File Id="cspak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\cs.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="dapak" Guid="FFDC6750-1BCC-4535-8417-447B28A26EE2" Win64="yes">
+        <File Id="dapak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\da.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="depak" Guid="1249280B-C9BC-4892-B30C-B7FC05A64D3A" Win64="yes">
+        <File Id="depak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\de.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="elpak" Guid="8A52E508-8FA9-479E-BE09-BDAD421E1D55" Win64="yes">
+        <File Id="elpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\el.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="enGBpak" Guid="338FEE6B-B8AA-4A00-ABB4-750A220753B1" Win64="yes">
+        <File Id="enGBpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\en-GB.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="enUSpak" Guid="96884809-F200-46AB-9231-ADE24BA3DD11" Win64="yes">
+        <File Id="enUSpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\en-US.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="espak" Guid="873CBFDB-603E-4E96-B8A8-72FD08439D20" Win64="yes">
+        <File Id="espak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\es.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="es419pak" Guid="B96C90D9-3577-4054-A935-F49515AF6517" Win64="yes">
+        <File Id="es419pak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\es-419.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="etpak" Guid="ADFEBB07-26C1-45AF-B267-FCAC8F5BDA1E" Win64="yes">
+        <File Id="etpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\et.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="fapak" Guid="481A004D-59B6-4CF4-8E95-DD945C91C961" Win64="yes">
+        <File Id="fapak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\fa.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="fipak" Guid="8608BE99-60DF-414A-9CDB-C305AADB9C4D" Win64="yes">
+        <File Id="fipak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\fi.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="filpak" Guid="27797C9A-B87F-4E31-99AF-CDFFCE9ED423" Win64="yes">
+        <File Id="filpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\fil.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="frpak" Guid="F3F8E6D3-38F2-4493-B398-A92B885CFC8E" Win64="yes">
+        <File Id="frpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\fr.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="gupak" Guid="DD6A7A7C-6EC4-4AA2-A445-02876CB3A20C" Win64="yes">
+        <File Id="gupak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\gu.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="hepak" Guid="3CD7869D-D404-49BB-A0D7-BC5C54EC0FB4" Win64="yes">
+        <File Id="hepak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\he.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="hipak" Guid="E9D84DD5-DE0E-4412-9EBE-C32DBEFC17D5" Win64="yes">
+        <File Id="hipak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\hi.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="hrpak" Guid="129B34D2-70D1-4FEA-BB11-98DA7612D81B" Win64="yes">
+        <File Id="hrpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\hr.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="hupak" Guid="3292BB20-1292-4A19-AAE2-E899D7EAD6F2" Win64="yes">
+        <File Id="hupak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\hu.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="idpak" Guid="DC3A77A4-9100-41B5-AC6C-199D1877DCCA" Win64="yes">
+        <File Id="idpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\id.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="itpak" Guid="C8B48711-076C-4C1B-AD23-0AA1FCD86594" Win64="yes">
+        <File Id="itpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\it.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="japak" Guid="6D470F20-8E97-4455-AA80-10023AA938C2" Win64="yes">
+        <File Id="japak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\ja.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="knpak" Guid="0C8B7737-87E6-417E-A998-8AB7254B9E60" Win64="yes">
+        <File Id="knpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\kn.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="kopak" Guid="D6632289-A7DC-4D83-8D83-9AC875372EC9" Win64="yes">
+        <File Id="kopak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\ko.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="ltpak" Guid="4141A5B3-BEFC-43E1-A01A-3E8973A648B4" Win64="yes">
+        <File Id="ltpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\lt.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="lvpak" Guid="4BDB0E12-5AB7-42D3-8569-E0CC5C549DBE" Win64="yes">
+        <File Id="lvpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\lv.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="mlpak" Guid="EE3DEDC1-19EE-4F2E-940C-2F5BC1BF3859" Win64="yes">
+        <File Id="mlpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\ml.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="mrpak" Guid="0D4B9CC7-18EC-4C52-B70E-960F4446CE59" Win64="yes">
+        <File Id="mrpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\mr.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="mspak" Guid="4D3203CA-85C9-4E2D-9354-EFED7F715FC7" Win64="yes">
+        <File Id="mspak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\ms.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="nbpak" Guid="9C39C093-C42C-42BB-AFB8-AE940B9E8B35" Win64="yes">
+        <File Id="nbpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\nb.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="nlpak" Guid="2FAFDBD4-51A1-4AB1-ABD7-16EB4AD6EA4F" Win64="yes">
+        <File Id="nlpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\nl.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="plpak" Guid="84E2B2D0-FB3E-44FE-AEBB-4DD558651AE7" Win64="yes">
+        <File Id="plpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\pl.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="ptBRpak" Guid="466D5AEA-0B88-4296-9F7F-E6BEDAE8C5D8" Win64="yes">
+        <File Id="ptBRpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\pt-BR.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="ptPTpak" Guid="A67C4909-7223-4A82-900C-25C427415AB7" Win64="yes">
+        <File Id="ptPTpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\pt-PT.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="ropak" Guid="18E0A13F-F79E-477A-AE87-FE5BD9A9E7CA" Win64="yes">
+        <File Id="ropak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\ro.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="rupak" Guid="2031746E-A07E-4787-973F-BF90E5EA07AB" Win64="yes">
+        <File Id="rupak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\ru.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="skpak" Guid="FA7B7909-4C6B-4551-91BA-D4E0EF771C14" Win64="yes">
+        <File Id="skpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\sk.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="slpak" Guid="CDE9D72E-35CF-4C93-A020-65B72F918DEA" Win64="yes">
+        <File Id="slpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\sl.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="srpak" Guid="88B8B647-5A22-4CB4-90DC-45A5A3C28DB9" Win64="yes">
+        <File Id="srpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\sr.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="svpak" Guid="FFA097AE-9AB1-4846-B489-F6C42546E9E4" Win64="yes">
+        <File Id="svpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\sv.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="swpak" Guid="0057317A-D111-4CDB-8F29-39BFB40D0D57" Win64="yes">
+        <File Id="swpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\sw.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="tapak" Guid="2A578625-5A0A-445F-A11E-7D89D294A23F" Win64="yes">
+        <File Id="tapak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\ta.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="tepak" Guid="52A97CBE-7E54-410D-946A-D89463354A20" Win64="yes">
+        <File Id="tepak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\te.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="thpak" Guid="69A66CCF-829D-4A60-8683-1FC1FE846C20" Win64="yes">
+        <File Id="thpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\th.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="trpak" Guid="FA8AFE47-9DB6-4B00-BACB-9CE26293A75A" Win64="yes">
+        <File Id="trpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\tr.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="ukpak" Guid="682306BB-B794-4CBC-98A0-339C9F04D3DB" Win64="yes">
+        <File Id="ukpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\uk.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="vipak" Guid="4DA7F314-528B-4357-AB4C-2D9FB33D4964" Win64="yes">
+        <File Id="vipak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\vi.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="zhCNpak" Guid="2DDF0D16-E11E-4660-881C-53274FECE3FB" Win64="yes">
+        <File Id="zhCNpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\zh-CN.pak" KeyPath="yes"/>
+      </Component>
+      <Component Id="zhTWpak" Guid="B45F31D3-4120-43F9-92F3-546453A05926" Win64="yes">
+        <File Id="zhTWpak" Source="C:\Users\Dawid\Desktop\PLAYER\PLAYER\bin\x64\Release\locales\zh-TW.pak" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
+
+    <!-- Step 3: Tell WiX to install the files -->
+    <Feature Id="MainApplication" Title="mPLAYER" Level="1">
+      <ComponentRef Id="mPLAYERexe"/>
+      <ComponentRef Id="AppStartMenuShortcut"/>
+      <ComponentRef Id="RegistryEntries"/>
+      <ComponentRef Id="mPLAYERexeconfig"/>
+      <ComponentRef Id="mPLAYERpdb"/>
+      <ComponentRef Id="nativesblobbin"/>
+      <ComponentRef Id="NAudiodll"/>
+      <ComponentRef Id="NAudioxml"/>
+      <ComponentRef Id="policy20taglibsharpconfig"/>
+      <ComponentRef Id="policy20taglibsharpdll"/>
+      <ComponentRef Id="snapshotblobbin"/>
+      <ComponentRef Id="taglibsharpdll"/>
+      <ComponentRef Id="widevinecdmadapterdll"/>
+      <ComponentRef Id="WPFSoundVisualizationLibdll"/>
+      <ComponentRef Id="YoutubeExplodedll"/>
+      <ComponentRef Id="YoutubeExplodexml"/>
+      <ComponentRef Id="MediaToolkitdll"/>
+      <ComponentRef Id="libGLESv2dll"/>
+      <ComponentRef Id="libEGLdll"/>
+      <ComponentRef Id="libcefdll"/>
+      <ComponentRef Id="icudtldat"/>
+      <ComponentRef Id="devtoolsresourcespak"/>
+      <ComponentRef Id="d3dcompiler47dll"/>
+      <ComponentRef Id="chromeelfdll"/>
+      <ComponentRef Id="CefSharpxml"/>
+      <ComponentRef Id="CefSharpWpfxml"/>
+      <ComponentRef Id="CefSharpWpfpdb"/>
+      <ComponentRef Id="CefSharpWpfdll"/>
+      <ComponentRef Id="CefSharppdb"/>
+      <ComponentRef Id="CefSharpdll"/>
+      <ComponentRef Id="CefSharpCorexml"/>
+      <ComponentRef Id="CefSharpCorepdb"/>
+      <ComponentRef Id="CefSharpCoredll"/>
+      <ComponentRef Id="CefSharpBrowserSubprocesspdb"/>
+      <ComponentRef Id="CefSharpBrowserSubprocessexe"/>
+      <ComponentRef Id="CefSharpBrowserSubprocessCorepdb"/>
+      <ComponentRef Id="CefSharpBrowserSubprocessCoredll"/>
+      <ComponentRef Id="cefextensionspak"/>
+      <ComponentRef Id="cef200percentpak"/>
+      <ComponentRef Id="cef100percentpak"/>
+      <ComponentRef Id="cefpak"/>
+      <!-- LOCALES -->
+      <ComponentRef Id="ampak"/>
+      <ComponentRef Id="arpak"/>
+      <ComponentRef Id="bgpak"/>
+      <ComponentRef Id="bnpak"/>
+      <ComponentRef Id="capak"/>
+      <ComponentRef Id="cspak"/>
+      <ComponentRef Id="dapak"/>
+      <ComponentRef Id="depak"/>
+      <ComponentRef Id="elpak"/>
+      <ComponentRef Id="enGBpak"/>
+      <ComponentRef Id="enUSpak"/>
+      <ComponentRef Id="espak"/>
+      <ComponentRef Id="es419pak"/>
+      <ComponentRef Id="etpak"/>
+      <ComponentRef Id="fapak"/>
+      <ComponentRef Id="fipak"/>
+      <ComponentRef Id="filpak"/>
+      <ComponentRef Id="frpak"/>
+      <ComponentRef Id="gupak"/>
+      <ComponentRef Id="hepak"/>
+      <ComponentRef Id="hipak"/>
+      <ComponentRef Id="hrpak"/>
+      <ComponentRef Id="hupak"/>
+      <ComponentRef Id="idpak"/>
+      <ComponentRef Id="itpak"/>
+      <ComponentRef Id="japak"/>
+      <ComponentRef Id="knpak"/>
+      <ComponentRef Id="kopak"/>
+      <ComponentRef Id="ltpak"/>
+      <ComponentRef Id="lvpak"/>
+      <ComponentRef Id="mlpak"/>
+      <ComponentRef Id="mrpak"/>
+      <ComponentRef Id="mspak"/>
+      <ComponentRef Id="nbpak"/>
+      <ComponentRef Id="nlpak"/>
+      <ComponentRef Id="plpak"/>
+      <ComponentRef Id="ptBRpak"/>
+      <ComponentRef Id="ptPTpak"/>
+      <ComponentRef Id="ropak"/>
+      <ComponentRef Id="rupak"/>
+      <ComponentRef Id="skpak"/>
+      <ComponentRef Id="slpak"/>
+      <ComponentRef Id="srpak"/>
+      <ComponentRef Id="svpak"/>
+      <ComponentRef Id="swpak"/>
+      <ComponentRef Id="tapak"/>
+      <ComponentRef Id="tepak"/>
+      <ComponentRef Id="thpak"/>
+      <ComponentRef Id="trpak"/>
+      <ComponentRef Id="ukpak"/>
+      <ComponentRef Id="vipak"/>
+      <ComponentRef Id="zhCNpak"/>
+      <ComponentRef Id="zhTWpak"/>
+    </Feature>
+  </Product>
+</Wix>

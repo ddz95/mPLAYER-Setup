@@ -1,0 +1,2 @@
+C:\Users\Dawid\Desktop\PLAYER\Setup\bin\x64\Release\mPLAYER_setup.msi
+C:\Users\Dawid\Desktop\PLAYER\Setup\bin\x64\Release\mPLAYER_setup.wixpdb

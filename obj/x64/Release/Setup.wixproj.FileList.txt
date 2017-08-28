@@ -1,0 +1,6 @@
+C:\Users\Dawid\Desktop\PLAYER\Setup\bin\x64\Release\Setup.msi
+C:\Users\Dawid\Desktop\PLAYER\Setup\bin\x64\Release\Setup.wixpdb
+obj\x64\Release\Product.wixobj
+obj\x64\Release\Setup.wixproj.BindContentsFileListnull.txt
+obj\x64\Release\Setup.wixproj.BindOutputsFileListnull.txt
+obj\x64\Release\Setup.wixproj.BindBuiltOutputsFileListnull.txt
